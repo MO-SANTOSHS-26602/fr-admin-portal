@@ -7,8 +7,8 @@ import { withBasePath } from "./_lib/constants";
 export default function AppHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const showLogout =
-    pathname === "/dashboard" || pathname === withBasePath("/dashboard");
+  const normalizedPathname = pathname.replace(/\/+$/, "");
+  const showLogout = normalizedPathname.endsWith("/dashboard");
 
   function handleLogout() {
     sessionStorage.removeItem("fr-admin-authenticated");

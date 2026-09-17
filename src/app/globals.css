@@ -163,39 +163,61 @@ hr {
 
 .clearButton {
   min-height: 40px;
+  min-width: 92px;
   padding: 8px 18px;
-  border: 1px solid #d9e1ec;
-  border-radius: 20px;
+  border: 1px solid #1f60b5;
+  border-radius: 6px;
   background: #ffffff;
-  color: #2b2a91;
+  color: #1f60b5;
+  font-weight: 700;
   cursor: pointer;
 }
 
+.clearButton:hover {
+  background: #eff6ff;
+  box-shadow: 0 8px 18px rgba(31, 96, 181, 0.12);
+}
+
 .logoutButton {
-  min-height: 38px;
-  padding: 8px 16px;
-  border: 1px solid #d9e1ec;
-  border-radius: 20px;
-  background: #ffffff;
-  color: #991b1b;
+  min-height: 40px;
+  min-width: 92px;
+  padding: 8px 18px;
+  border: 1px solid #1f60b5;
+  border-radius: 6px;
+  background: #1f60b5;
+  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
 }
 
 .logoutButton:hover {
-  border-color: #fca5a5;
-  background: #fef2f2;
+  border-color: #174f98;
+  background: #174f98;
+  box-shadow: 0 8px 18px rgba(31, 96, 181, 0.22);
 }
 
 .submitButton {
   min-height: 40px;
-  padding: 8px 20px;
-  border: 0;
-  border-radius: 20px;
-  background: #2b2a91;
+  min-width: 92px;
+  padding: 8px 18px;
+  border: 1px solid #1f60b5;
+  border-radius: 6px;
+  background: #1f60b5;
   color: #ffffff;
   font-weight: 700;
   cursor: pointer;
+}
+
+.submitButton:hover:not(:disabled) {
+  border-color: #174f98;
+  background: #174f98;
+  box-shadow: 0 8px 18px rgba(31, 96, 181, 0.22);
+}
+
+.submitButton:disabled {
+  border-color: #cbd5e1;
+  background: #cbd5e1;
+  cursor: not-allowed;
 }
 
 @media (max-width: 720px) {
