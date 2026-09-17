@@ -1,0 +1,39 @@
+{
+  "name": "fr-admin-portal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "set BUILD_ENV=uat && next dev -p 3030",
+    "build": "next build",
+    "start": "next start -p 3030",
+    "build:uat": "set BUILD_ENV=uat && next build",
+    "start:uat": "pm2 start ecosystem.config.js --only fr-admin-portal-uat",
+    "reload:uat": "pm2 reload fr-admin-portal-uat",
+    "config:uat": "copy web.config.uat web.config",
+    "build:pilot": "set BUILD_ENV=pilot && next build",
+    "start:pilot": "pm2 start ecosystem.config.js --only fr-admin-portal-pilot",
+    "reload:pilot": "pm2 reload fr-admin-portal-pilot",
+    "config:pilot": "copy web.config.pilot web.config",
+    "build:prod": "set BUILD_ENV=production && next build",
+    "start:prod": "pm2 start ecosystem.config.js --only fr-admin-portal-prod",
+    "reload:prod": "pm2 reload fr-admin-portal-prod",
+    "config:prod": "copy web.config.production web.config",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "dotenv": "^17.4.2",
+    "mssql": "^9.1.1",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.3",
+    "typescript": "latest"
+  }
+}
