@@ -12,6 +12,7 @@ type OfferRecord = {
   SrNo?: string | number | null;
   frCode?: string | number | null;
   raCode?: string | number | null;
+  agentName?: string | number | null;
   referDate?: string | Date | null;
   upfrontIncentive?: string | number | null;
   revShare?: string | number | null;
@@ -36,8 +37,11 @@ function fieldValue(value: string | number | Date | null | undefined) {
   return textValue;
 }
 
-function isValidPercentageInput(value: string) {
-  return /^\d{0,3}$/.test(value) && (value === "" || Number(value) <= 100);
+function isValidNumericInput(value: string, maxDigits = 3, maxValue = 100) {
+  return (
+    new RegExp(`^\\d{0,${maxDigits}}$`).test(value) &&
+    (value === "" || Number(value) <= maxValue)
+  );
 }
 
 export default function Page() {
@@ -45,6 +49,7 @@ export default function Page() {
   const [frCode, setFrCode] = useState("");
   const [liCode, setLiCode] = useState("");
   const [liCodeOptions, setLiCodeOptions] = useState<string[]>([]);
+  const [agentName, setAgentName] = useState("");
   const [srNo, setSrNo] = useState("");
   const [referDate, setReferDate] = useState("");
   const [acOpening, setAcOpening] = useState("");
@@ -74,9 +79,11 @@ export default function Page() {
 
   function handleNumericChange(
     value: string,
-    setter: (nextValue: string) => void
+    setter: (nextValue: string) => void,
+    maxDigits = 3,
+    maxValue = 100
   ) {
-    if (!isValidPercentageInput(value)) return;
+    if (!isValidNumericInput(value, maxDigits, maxValue)) return;
 
     setter(value);
     setErrors([]);
@@ -85,17 +92,20 @@ export default function Page() {
   function validateNumericField(
     value: string,
     label: string,
-    validationErrors: string[]
+    validationErrors: string[],
+    maxDigits = 3,
+    maxValue = 100
   ) {
     if (!value) {
       validationErrors.push(`${label} is required`);
-    } else if (!isValidPercentageInput(value)) {
-      validationErrors.push(`${label} must be numeric and between 0-100`);
+    } else if (!isValidNumericInput(value, maxDigits, maxValue)) {
+      validationErrors.push(`${label} must be numeric and between 0-${maxValue}`);
     }
   }
 
   function clearOfferDetails() {
     setSrNo("");
+    setAgentName("");
     setReferDate("");
     setAcOpening("");
     setMonthlyCapping("");
@@ -113,6 +123,7 @@ export default function Page() {
     setReferDate(fieldValue(offer.referDate));
     setFrCode(fieldValue(offer.frCode) || frCode);
     setLiCode(fieldValue(offer.raCode) || liCode);
+    setAgentName(fieldValue(offer.agentName));
     setAcOpening(fieldValue(offer.upfrontIncentive));
     setBrokerageSharing(fieldValue(offer.revShare));
     setMonthlyCapping(fieldValue(offer.monthlyCap));
@@ -213,8 +224,20 @@ export default function Page() {
     const validationErrors: string[] = [];
     if (!frCode.trim()) validationErrors.push("FR Code is required");
     if (!liCode.trim()) validationErrors.push("LI Code is required");
-    validateNumericField(acOpening, "A/C Opening Incentive", validationErrors);
-    validateNumericField(monthlyCapping, "Monthly Capping", validationErrors);
+    validateNumericField(
+      acOpening,
+      "A/C Opening Incentive",
+      validationErrors,
+      4,
+      9999
+    );
+    validateNumericField(
+      monthlyCapping,
+      "Monthly Capping",
+      validationErrors,
+      4,
+      9999
+    );
     validateNumericField(
       brokerageSharing,
       "Brokerage Sharing %",
@@ -352,6 +375,12 @@ export default function Page() {
                   </option>
                 ))}
               </select>
+              {agentName && (
+                <div className="readOnlyValue">
+                  <span>Agent Name</span>
+                  <strong>{agentName}</strong>
+                </div>
+              )}
             </div>
           </div>
 
@@ -361,11 +390,11 @@ export default function Page() {
               <input
                 value={acOpening}
                 onChange={(e) =>
-                  handleNumericChange(e.target.value, setAcOpening)
+                  handleNumericChange(e.target.value, setAcOpening, 4, 9999)
                 }
                 disabled={!canEditOfferFields}
                 inputMode="numeric"
-                maxLength={3}
+                maxLength={4}
                 pattern="[0-9]*"
                 placeholder=""
               />
@@ -376,11 +405,16 @@ export default function Page() {
               <input
                 value={monthlyCapping}
                 onChange={(e) =>
-                  handleNumericChange(e.target.value, setMonthlyCapping)
+                  handleNumericChange(
+                    e.target.value,
+                    setMonthlyCapping,
+                    4,
+                    9999
+                  )
                 }
                 disabled={!canEditOfferFields}
                 inputMode="numeric"
-                maxLength={3}
+                maxLength={4}
                 pattern="[0-9]*"
                 placeholder=""
               />
