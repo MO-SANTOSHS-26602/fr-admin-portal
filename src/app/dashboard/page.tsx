@@ -384,7 +384,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="twoCol">
+          <div className="twoCol alignEnd">
             <div className="field">
               <label>A/C Opening Incentive</label>
               <input
