@@ -23,6 +23,8 @@ type OfferRecord = {
   FixedIncome?: string | number | null;
   MF?: string | number | null;
   Insurance?: string | number | null;
+  Stratx?: string | number | null;
+  IMP?: string | number | null;
 };
 
 function fieldValue(value: string | number | Date | null | undefined) {
@@ -62,6 +64,8 @@ export default function Page() {
   const [mfSharing, setMfSharing] = useState("");
   const [insuranceSharing, setInsuranceSharing] = useState("");
   const [fixedIncomeSharing, setFixedIncomeSharing] = useState("");
+  const [stratxSharing, setStratxSharing] = useState("");
+  const [impSharing, setImpSharing] = useState("");
 
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -116,6 +120,8 @@ export default function Page() {
     setMfSharing("");
     setInsuranceSharing("");
     setFixedIncomeSharing("");
+    setStratxSharing("");
+    setImpSharing("");
   }
 
   function bindOfferDetails(offer: OfferRecord) {
@@ -133,6 +139,8 @@ export default function Page() {
     setFixedIncomeSharing(fieldValue(offer.FixedIncome));
     setMfSharing(fieldValue(offer.MF));
     setInsuranceSharing(fieldValue(offer.Insurance));
+    setStratxSharing(fieldValue(offer.Stratx));
+    setImpSharing(fieldValue(offer.IMP));
   }
 
   async function getOfferFromCodes(frCodeValue = frCode, liCodeValue = liCode) {
@@ -246,7 +254,9 @@ export default function Page() {
     validateNumericField(periodicity, "Periodicity", validationErrors);
     validateNumericField(pmsSharing, "PMS Sharing %", validationErrors);
     validateNumericField(peaifSharing, "PE/AIF Sharing %", validationErrors);
-    validateNumericField(mfSharing, "MF Sharing %", validationErrors);
+    // validateNumericField(mfSharing, "MF Sharing %", validationErrors);
+    validateNumericField(stratxSharing, "Stratx Sharing %", validationErrors);
+    validateNumericField(impSharing, "IMP Sharing %", validationErrors);
     validateNumericField(
       insuranceSharing,
       "Insurance Sharing %",
@@ -280,6 +290,8 @@ export default function Page() {
           mfSharing: Number(mfSharing),
           insuranceSharing: Number(insuranceSharing),
           fixedIncomeSharing: Number(fixedIncomeSharing),
+          stratxSharing: Number(stratxSharing),
+          impSharing: Number(impSharing),
         }),
       });
 
@@ -486,7 +498,7 @@ export default function Page() {
               />
             </div>
 
-            <div className="field">
+            {/* <div className="field">
               <label>MF Sharing %</label>
               <input
                 value={mfSharing}
@@ -499,9 +511,38 @@ export default function Page() {
                 pattern="[0-9]*"
                 placeholder=""
               />
+            </div> */}
+
+            <div className="field">
+              <label>Stratx Sharing %</label>
+              <input
+                value={stratxSharing}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setStratxSharing)
+                }
+                disabled={!canEditOfferFields}
+                inputMode="numeric"
+                maxLength={3}
+                pattern="[0-9]*"
+                placeholder=""
+              />
             </div>
 
             <div className="field">
+              <label>IMP Sharing %</label>
+              <input
+                value={impSharing}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setImpSharing)
+                }
+                disabled={!canEditOfferFields}
+                inputMode="numeric"
+                maxLength={3}
+                pattern="[0-9]*"
+                placeholder=""
+              />
+            </div>
+            <div className="field fullWidth">
               <label>Insurance Sharing %</label>
               <input
                 value={insuranceSharing}

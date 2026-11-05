@@ -8,7 +8,9 @@ export default function AppHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const normalizedPathname = pathname.replace(/\/+$/, "");
-  const showLogout = normalizedPathname.endsWith("/dashboard");
+  const isDashboard = normalizedPathname.endsWith("/dashboard");
+  const isReport = normalizedPathname.endsWith("/tc-report");
+  const showLogout = isDashboard || isReport;
 
   function handleLogout() {
     sessionStorage.removeItem("fr-admin-authenticated");
@@ -28,13 +30,24 @@ export default function AppHeader() {
         />
 
         {showLogout && (
-          <button
-            type="button"
-            className="logoutButton"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
+          <div className="headerActions">
+            <button
+              type="button"
+              className="clearButton"
+              onClick={() =>
+                router.push(isReport ? "/dashboard" : "/tc-report")
+              }
+            >
+              {isReport ? "Dashboard" : "T&C Report"}
+            </button>
+            <button
+              type="button"
+              className="logoutButton"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </div>
         )}
       </div>
     </header>

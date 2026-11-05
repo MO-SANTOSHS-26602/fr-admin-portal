@@ -16,6 +16,8 @@ function validateInputs(data: {
   mfSharing?: string | number;
   insuranceSharing?: string | number;
   fixedIncomeSharing?: string | number;
+  stratxSharing?: string | number;
+  impSharing?: string | number;
 }): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
@@ -44,14 +46,20 @@ function validateInputs(data: {
   if (data.peaifSharing === "" || data.peaifSharing === undefined || data.peaifSharing === null) {
     errors.push("PE/AIF Sharing % is required");
   }
-  if (data.mfSharing === "" || data.mfSharing === undefined || data.mfSharing === null) {
-    errors.push("MF Sharing % is required");
-  }
+  // if (data.mfSharing === "" || data.mfSharing === undefined || data.mfSharing === null) {
+  //   errors.push("MF Sharing % is required");
+  // }
   if (data.insuranceSharing === "" || data.insuranceSharing === undefined || data.insuranceSharing === null) {
     errors.push("Insurance Sharing % is required");
   }
   if (data.fixedIncomeSharing === "" || data.fixedIncomeSharing === undefined || data.fixedIncomeSharing === null) {
     errors.push("Fixed Income Sharing % is required");
+  }
+  if (data.stratxSharing === "" || data.stratxSharing === undefined || data.stratxSharing === null) {
+    errors.push("Stratx Sharing % is required");
+  }
+  if (data.impSharing === "" || data.impSharing === undefined || data.impSharing === null) {
+    errors.push("IMP Sharing % is required");
   }
 
   // Validate numeric fields
@@ -64,6 +72,8 @@ function validateInputs(data: {
     mfSharing: { min: 0, max: 100 },
     insuranceSharing: { min: 0, max: 100 },
     fixedIncomeSharing: { min: 0, max: 999999 },
+    stratxSharing: { min: 0, max: 100 },
+    impSharing: { min: 0, max: 100 },
   };
 
   for (const [field, range] of Object.entries(numericFields)) {
@@ -96,6 +106,8 @@ interface IncentiveRecord {
   mfSharing: number;
   insuranceSharing: number;
   fixedIncomeSharing: number;
+  stratxSharing: number;
+  impSharing: number;
   timestamp: string;
 }
 
@@ -127,6 +139,8 @@ export async function POST(request: NextRequest) {
       mfSharing: Number(body.mfSharing),
       insuranceSharing: Number(body.insuranceSharing),
       fixedIncomeSharing: Number(body.fixedIncomeSharing),
+      stratxSharing: Number(body.stratxSharing),
+      impSharing: Number(body.impSharing),
       timestamp: new Date().toISOString(),
     };
 
@@ -148,6 +162,8 @@ export async function POST(request: NextRequest) {
         .input("mf_sharing", sql.Decimal(5, 2), record.mfSharing)
         .input("insurance_sharing", sql.Decimal(5, 2), record.insuranceSharing)
         .input("fixed_sharing", sql.Decimal(18, 2), record.fixedIncomeSharing)
+        .input("stratx_sharing", sql.Decimal(5, 2), record.stratxSharing)
+        .input("imp_sharing", sql.Decimal(5, 2), record.impSharing)
         .execute("usp_Insert_Brokrage_Sharing_Details");
     } else {
       console.log("Incentive data received and validated:", record);

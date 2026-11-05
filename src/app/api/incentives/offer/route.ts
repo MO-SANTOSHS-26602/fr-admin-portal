@@ -42,6 +42,8 @@ function mapBrokerageSharingRow(row: Record<string, unknown>) {
     ]),
     MF: pickField(row, ["MF", "mf_sharing"]),
     Insurance: pickField(row, ["Insurance", "insurance_sharing"]),
+    Stratx: pickField(row, ["Stratx", "stratx_sharing", "stratxSharing"]),
+    IMP: pickField(row, ["IMP", "imp_sharing", "impSharing"]),
   };
 }
 
